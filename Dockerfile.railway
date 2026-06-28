@@ -29,10 +29,9 @@ RUN poetry config virtualenvs.create false && \
 
 COPY source/web_service .
 
-# Add health check endpoint
-RUN echo 'from django.conf import settings\nfrom django.http import JsonResponse\n\ndef health(request):\n    return JsonResponse({"status": "ok"})' > pequeroku/health.py
+COPY railway-start.sh /app/railway-start.sh
+RUN chmod +x /app/railway-start.sh
 
 EXPOSE 8000
 
-# Run the entrypoint script
-CMD ["bash", "/app/entrypoint.sh"]
+CMD ["bash", "/app/railway-start.sh"]

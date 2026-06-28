@@ -5,8 +5,10 @@
     "dockerfile": "Dockerfile.railway"
   },
   "deploy": {
-    "startCommand": "bash railway-start.sh",
-    "restartPolicyMaxRetries": 3,
-    "restartPolicyMaxBackoff": "5m"
+    "startCommand": "bash /app/railway-start.sh",
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 30,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 3
   }
 }
