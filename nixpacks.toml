@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Nixpacks configuration for Railway
+# This tells Railway how to build the application
+
+set -uo pipefail
+
+echo "[nixpacks] Installing system dependencies..."
+apt-get update
+apt-get install -y --no-install-recommends \
+  curl ca-certificates libpq-dev
+
+echo "[nixpacks] Python setup..."
+# Python 3.13 is already available in nixpacks base
+# Just ensure Poetry is installed
+pip install --upgrade pip poetry
+
+echo "[nixpacks] Build configuration complete"
