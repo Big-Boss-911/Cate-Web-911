@@ -17,11 +17,18 @@ urlpatterns = [
     path("health", health, name="health"),
     path("readiness", readiness, name="readiness"),
     
+    # API Schema endpoint - must be before /api/v1/ to avoid routing conflicts
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    
+    # API routes
     path("api/v1/", include("platform_api.urls")),
     path("api/account/", include("platform_api.account_urls")),
     path("api/", include("vm_manager.urls")),
+    
+    # Admin panel
     path("admin/", admin.site.urls),
+    
+    # Schema documentation views
     path(
         "api/schema/swagger-ui/",
         SpectacularSwaggerView.as_view(url_name="schema"),
