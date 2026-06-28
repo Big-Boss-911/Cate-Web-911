@@ -10,7 +10,8 @@ _INDEX_HTML = """<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PequeRoku</title>
+  <title>SHAHEEN-YS</title>
+  <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
   <style>
     body {{ font-family: system-ui, sans-serif; max-width: 600px; margin: 80px auto; padding: 0 20px; color: #1a1a1a; }}
     h1   {{ font-size: 2rem; margin-bottom: 0.25rem; }}
@@ -24,8 +25,8 @@ _INDEX_HTML = """<!DOCTYPE html>
   </style>
 </head>
 <body>
-  <h1>PequeRoku <span class="badge">running</span></h1>
-  <p>Cloud container platform — application is running successfully.</p>
+  <h1>SHAHEEN-YS <span class="badge">running</span></h1>
+  <p>Advanced container management platform — application is running successfully.</p>
   <ul>
     <li><a href="/admin/">Admin panel</a></li>
     <li><a href="/api/schema/swagger-ui/">API docs (Swagger UI)</a></li>
@@ -56,7 +57,7 @@ def health(request):
     try:
         from django.db import connection
         connection.ensure_connection()
-        return JsonResponse({"status": "ok", "service": "pequeroku-web"})
+        return JsonResponse({"status": "ok", "service": "shaheen-ys-web"})
     except Exception as e:
         return JsonResponse(
             {"status": "error", "message": str(e)},
@@ -84,7 +85,7 @@ def readiness(request):
         
         return JsonResponse({
             "status": "ready",
-            "service": "pequeroku-web",
+            "service": "shaheen-ys-web",
             "checks": {
                 "database": "ok",
                 "cache": "ok"
