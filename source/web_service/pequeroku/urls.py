@@ -2,6 +2,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
+from django.views.generic import RedirectView
 
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -11,6 +12,9 @@ from drf_spectacular.views import (
 from pequeroku.health import health, readiness
 
 urlpatterns = [
+    # Root redirect → admin panel (sensible entry point for a backend-only deployment)
+    path("", RedirectView.as_view(url="/admin/", permanent=False), name="root"),
+
     # Health check endpoints for Railway/load balancers
     path("health", health, name="health"),
     path("readiness", readiness, name="readiness"),

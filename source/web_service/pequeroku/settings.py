@@ -20,7 +20,19 @@ INTERNAL_HOSTS = [
     if h.strip()
 ]
 
-ALLOWED_HOSTS = INTERNAL_HOSTS + [
+# Railway automatically injects RAILWAY_PUBLIC_DOMAIN (e.g. myapp.up.railway.app)
+# and RAILWAY_STATIC_URL. Include them so the app works without manually setting
+# ALLOWED_HOSTS in the Railway dashboard.
+_railway_hosts = [
+    h
+    for h in [
+        os.environ.get("RAILWAY_PUBLIC_DOMAIN", ""),
+        os.environ.get("RAILWAY_STATIC_URL", ""),
+    ]
+    if h
+]
+
+ALLOWED_HOSTS = INTERNAL_HOSTS + _railway_hosts + [
     h.strip()
     for h in os.environ.get("ALLOWED_HOSTS", "").split(",")
     if h.strip() and h.strip() not in INTERNAL_HOSTS
