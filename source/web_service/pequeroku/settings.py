@@ -122,8 +122,8 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Pequeroku",
-    "DESCRIPTION": "Easy way to share a piece of your machine...",
+    "TITLE": "SHAHEEN-YS Platform API",
+    "DESCRIPTION": "Advanced container management platform for isolated QEMU environments",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
     # Keep the public /api/v1 surface out of the IDE schema; it ships its own
