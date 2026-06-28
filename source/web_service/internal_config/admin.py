@@ -1,6 +1,11 @@
 from django.contrib import admin
 from .models import Config, AIUsageLog, AuditLog, AIMemory
 
+# Configure Django admin site branding for SHAHEEN-YS
+admin.site.site_header = "SHAHEEN-YS Administration"
+admin.site.site_title = "SHAHEEN-YS"
+admin.site.index_title = "Welcome to SHAHEEN-YS Administration"
+
 
 @admin.register(AIMemory)
 class AIMemoryAdmin(admin.ModelAdmin):

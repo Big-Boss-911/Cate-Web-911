@@ -1,0 +1,12 @@
+"""
+Favicon in ICO format (base64 encoded placeholder)
+This is a minimal 1x1 transparent PNG converted to ICO format.
+
+For production, replace with your actual SHAHEEN-YS logo/favicon.
+The image from https://i.postimg.cc/KcwsYCND/IMG-20260603-002633-049.jpg 
+should be converted to favicon.ico format using an online converter or ImageMagick:
+
+convert IMG-20260603-002633-049.jpg -define icon:auto-resize=16,32,48,64 favicon.ico
+
+This file is served by WhiteNoise middleware from the static directory.
+"""

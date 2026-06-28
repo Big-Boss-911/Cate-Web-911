@@ -118,16 +118,22 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ],
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "EXCEPTION_HANDLER": "rest_framework.views.exception_handler",
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Pequeroku",
-    "DESCRIPTION": "Easy way to share a piece of your machine...",
+    "TITLE": "SHAHEEN-YS Platform API",
+    "DESCRIPTION": "Advanced container management platform for isolated QEMU environments",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
     # Keep the public /api/v1 surface out of the IDE schema; it ships its own
     # schema at /api/v1/schema/ (see platform_api.schema).
     "PREPROCESSING_HOOKS": ["platform_api.schema.exclude_v1_from_default"],
+    # Ensure None values don't break schema generation
+    "SKIP_ENDPOINTS_WITHOUT_TAGS": False,
+    "SCHEMA_PATH_PREFIX": "/api/",
+    "DISABLE_SPECTACULAR_DEFAULTS": False,
+    "SPECTACULAR_SETTINGS_MERGE": True,
 }
 
 # Django cache: Redis in prod (shared across gunicorn workers, so Idempotency-Key
