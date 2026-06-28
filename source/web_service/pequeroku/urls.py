@@ -2,18 +2,16 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
-from django.views.generic import RedirectView
-
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
-from pequeroku.health import health, readiness
+from pequeroku.health import health, index, readiness
 
 urlpatterns = [
-    # Root redirect → admin panel (sensible entry point for a backend-only deployment)
-    path("", RedirectView.as_view(url="/admin/", permanent=False), name="root"),
+    # Root — returns HTTP 200 directly; no redirect chain, no 404.
+    path("", index, name="root"),
 
     # Health check endpoints for Railway/load balancers
     path("health", health, name="health"),

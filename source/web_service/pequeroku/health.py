@@ -1,9 +1,50 @@
 """
-Health check view for Railway deployment
+Health check and root views for Railway deployment.
 Source: source/web_service/pequeroku/health.py
 """
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
+
+_INDEX_HTML = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PequeRoku</title>
+  <style>
+    body {{ font-family: system-ui, sans-serif; max-width: 600px; margin: 80px auto; padding: 0 20px; color: #1a1a1a; }}
+    h1   {{ font-size: 2rem; margin-bottom: 0.25rem; }}
+    p    {{ color: #555; margin-top: 0; }}
+    ul   {{ padding-left: 1.2rem; line-height: 2; }}
+    a    {{ color: #0070f3; text-decoration: none; }}
+    a:hover {{ text-decoration: underline; }}
+    .badge {{ display: inline-block; background: #22c55e; color: #fff;
+              font-size: 0.75rem; font-weight: 600; padding: 2px 8px;
+              border-radius: 999px; vertical-align: middle; margin-left: 8px; }}
+  </style>
+</head>
+<body>
+  <h1>PequeRoku <span class="badge">running</span></h1>
+  <p>Cloud container platform — application is running successfully.</p>
+  <ul>
+    <li><a href="/admin/">Admin panel</a></li>
+    <li><a href="/api/schema/swagger-ui/">API docs (Swagger UI)</a></li>
+    <li><a href="/api/schema/redoc/">API docs (ReDoc)</a></li>
+    <li><a href="/health">Health check</a></li>
+    <li><a href="/readiness">Readiness check</a></li>
+  </ul>
+</body>
+</html>"""
+
+
+@require_http_methods(["GET", "HEAD"])
+def index(request):
+    """Root view — returns HTTP 200 with a simple landing page.
+
+    Avoids the redirect chain (/ → /admin/ → /admin/login/) that can confuse
+    health probes and makes the API surface immediately discoverable.
+    """
+    return HttpResponse(_INDEX_HTML, content_type="text/html; charset=utf-8")
 
 
 @require_http_methods(["GET"])
