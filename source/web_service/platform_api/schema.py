@@ -1,9 +1,7 @@
-"""drf-spectacular glue to keep the IDE schema and the v1 schema separate.
+"""Platform API v1 OpenAPI Schema Configuration
 
-The default ``/api/schema/`` enumerates the whole root urlconf, which now includes
-``/api/v1``. This preprocessing hook drops v1 paths from that (IDE) schema. The v1
-schema view scopes itself by urlconf AND sets ``PREPROCESSING_HOOKS=[]`` so this
-hook does not run there (it would otherwise strip every v1 path).
+This module configures the OpenAPI schema generation for the public /api/v1 API surface,
+keeping it separate from the internal IDE schema at /api/schema/.
 """
 
 from __future__ import annotations
@@ -12,26 +10,45 @@ from __future__ import annotations
 def exclude_v1_from_default(endpoints, **kwargs):
     """Filter out /api/v1 endpoints from the default schema.
     
+    The default schema at /api/schema/ serves the internal IDE surface and should not
+    include the public /api/v1 paths. This preprocessing hook removes them.
+    
     Args:
         endpoints: List of (path, http_method, view) tuples from drf-spectacular
-        **kwargs: Additional keyword arguments passed by drf-spectacular
+        **kwargs: Additional keyword arguments passed by drf-spectacular (ignored)
         
     Returns:
-        Filtered list of endpoints excluding v1 paths
+        Filtered list of endpoints excluding /api/v1 paths
+        
+    Raises:
+        None - All errors are handled gracefully to prevent schema generation crashes
     """
+    # Handle None/empty endpoints list safely
     if endpoints is None:
         return []
     
+    if not isinstance(endpoints, (list, tuple)):
+        # If endpoints is not iterable, return empty list to prevent crashes
+        return []
+    
     filtered = []
+    
     for endpoint in endpoints:
-        # Handle endpoint tuple structure: (path, http_method, view)
-        if isinstance(endpoint, (list, tuple)) and len(endpoint) > 0:
-            path = endpoint[0] if isinstance(endpoint[0], str) else str(endpoint[0])
-            # Exclude /api/v1 paths from the default schema
-            if not path.startswith("/api/v1/"):
+        try:
+            # Handle endpoint tuple structure: (path, http_method, view) or similar
+            if isinstance(endpoint, (list, tuple)) and len(endpoint) > 0:
+                # Safe extraction of path (first element)
+                path = endpoint[0] if isinstance(endpoint[0], str) else str(endpoint[0])
+                
+                # Exclude /api/v1 paths from the default schema
+                if not path.startswith("/api/v1/"):
+                    filtered.append(endpoint)
+            else:
+                # If structure is unexpected, include it to avoid breaking the schema
                 filtered.append(endpoint)
-        else:
-            # If structure is unexpected, include it to avoid breaking the schema
+        except (AttributeError, TypeError, IndexError):
+            # If any error occurs processing this endpoint, include it anyway
+            # to prevent schema generation from failing completely
             filtered.append(endpoint)
     
     return filtered
